@@ -240,7 +240,7 @@ function GitRequests:getFileContent(filePath: string, ref: string?) : string?
     if response.StatusCode == 200 then
         local data = HttpService:JSONDecode(response.Body)
         if data.content then
-            return base64.decode(data.content:gsub("\n", ""))
+            return base64.decode(buffer.fromstring(data.content:gsub("\n", "")))
         else
             error("파일 내용을 가져올 수 없습니다.")
         end
