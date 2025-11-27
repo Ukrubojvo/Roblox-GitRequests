@@ -203,7 +203,7 @@ end
     local contentAtTag = gitRequestsInstance:getFileContent("main.lua", "v1.0.0")
 ]]
 function GitRequests:getFileContent(filePath: string, ref: string?) : string?
-    local url = GitRequests.API_BASE_URL .. self.username .. "/" .. self.repository .. "/contents/" .. filePath .. (ref and ("?ref=" .. ref) or "")
+    local url = self.API_BASE_URL .. self.username .. "/" .. self.repository .. "/contents/" .. filePath .. (ref and ("?ref=" .. ref) or "")
     
     local response
 
