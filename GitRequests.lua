@@ -1,3 +1,6 @@
+--Made by Itchino
+--Edit by AntiLua
+
 local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
 
@@ -169,15 +172,15 @@ GitRequests.__index = GitRequests
 GitRequests.API_BASE_URL = "https://api.github.com/repos/"
 
 --[[
-    GitRequests 클래스 생성자
+    GitRequests Class Constructor
 
-    파라미터:
-    username: GitHub 사용자 이름
-    repository: 저장소 이름
+    Parameters:
+    username: GitHub username
+    repository: Repository name
 
-    반환값: GitRequests 클래스 인스턴스
+    Returns: An instance of the GitRequests class
 
-    사용 예시:
+    Usage example:
     local gitRequestsInstance = GitRequests.Repo("username", "repository")
 ]]
 function GitRequests.Repo(username, repository)
@@ -188,15 +191,15 @@ function GitRequests.Repo(username, repository)
 end
 
 --[[
-    파일 요청 함수
+    File Request Function
 
-    파라미터:
-    filePath: 저장소 내 파일 경로
-    ref: 브렌치, 태그 또는 커밋 SHA (선택 사항)
+    Parameters:
+    filePath: File path within the repository
+    ref: Branch, tag, or commit SHA (optional)
 
-    반환값: 파일 내용 (문자열) 또는 nil (오류 시)
+    Return Value: File content (string) or nil (on error)
 
-    사용 예시:
+    Usage Example:
     local content = gitRequestsInstance:getFileContent("main.lua")
     local contentAtBranch = gitRequestsInstance:getFileContent("main.lua", "develop")
     local contentAtCommit = gitRequestsInstance:getFileContent("main.lua", "a1b2c3d4")
@@ -235,17 +238,17 @@ function GitRequests:getFileContent(filePath: string, ref: string?) : string?
             }
         end
     else
-        error("HTTP 요청이 비활성화되어 있습니다.")
+        error("HTTP requests are disabled.")
     end
     if response.StatusCode == 200 then
         local data = HttpService:JSONDecode(response.Body)
         if data.content then
             return buffer.tostring(base64.decode(buffer.fromstring(data.content:gsub("\n", ""))))
         else
-            error("파일 내용을 가져올 수 없습니다.")
+            error("Unable to retrieve file contents.")
         end
     else
-        error("GitHub API 요청 실패: " .. response.StatusCode)
+        error("GitHub API request failed: " .. response.StatusCode)
     end
 end
 
