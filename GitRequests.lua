@@ -207,6 +207,7 @@ end
 ]]
 function GitRequests:getFileContent(filePath: string, ref: string?) : string?
     local url = self.API_BASE_URL .. self.username .. "/" .. self.repository .. "/contents/" .. filePath .. (ref and ("?ref=" .. ref) or "")
+	local rawUrl = "https://raw.githubusercontent.com/" .. self.username .. "/" .. self.repository .. "/" .. (ref or "main") .. "/" .. filePath
     
     local response
 
@@ -245,10 +246,11 @@ function GitRequests:getFileContent(filePath: string, ref: string?) : string?
         if data.content then
             return buffer.tostring(base64.decode(buffer.fromstring(data.content:gsub("\n", ""))))
         else
-            error("Unable to retrieve file contents.")
+            return game:HttpGet(rawUrl)
         end
     else
-        error("GitHub API request failed: " .. response.StatusCode)
+        warn("GitHub API request failed: " .. response.StatusCode .. ", falling back to raw URL")
+        return game:HttpGet(rawUrl)
     end
 end
 
